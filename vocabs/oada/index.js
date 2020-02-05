@@ -268,6 +268,14 @@ register('barometric-pressure', override('generic-data-value', {
   type: Number,
 }));
 
+register('temperature', override('generic-data-value', {
+  description: 'Temperature as measured by a thermometer or similar device',
+  properties: {
+    'units': enumSchema([ '°F', '°C', '°R','F', 'C', 'K', 'R'])
+  },
+  type: Number,
+}));
+
 register('weight', override('generic-data-value', {
     description: 'weight is a data type which holds a reading of weight, as in bushels, lbs, or kg.',
     properties: {
