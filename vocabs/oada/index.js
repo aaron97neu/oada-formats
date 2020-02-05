@@ -278,6 +278,14 @@ register('moisture', override('generic-data-value', {
     },
 }));
 
+register('barometric-pressure', override('generic-data-value', {
+  description: 'Atmospheric air pressure as measured by a baramoter or similar device',
+  properties: {
+    'units': enumSchema([ 'Pa', 'hPa', 'bar', 'mBar', 'mm Hg', 'in Hg', 'psi', 'atm', 'at', 'torr'])
+  },
+  type: Number,
+}));
+
 register('weight', override('generic-data-value', {
     description: 'weight is a data type which holds a reading of weight, as in bushels, lbs, or kg.',
     properties: {
