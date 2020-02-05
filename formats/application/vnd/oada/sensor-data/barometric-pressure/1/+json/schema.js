@@ -1,48 +1,40 @@
-var refs = require('../../../../../../../refs.js');
+const libvocab = require('vocabs/oada');
+const {vocabToSchema,vocabToProperties,patterns,override} = libvocab;
+const { oadaSchema } = require('lib/oada-schema-util.js')(libvocab);
 
-module.exports = {
-    id: refs.OADA_SENSOR_DATA_BAROMETRIC_PRESSURE_ID,
-    description: 'application/vnd.oada.sensor-data.barometric-pressure.1+json',
+module.exports = oadaSchema({
+  _type: 'application/vnd.oada.sensor-data.barometric-pressure.1+json',
 
-    additionalProperties: true,
+  description: 'Atmospheric air pressure',
+    
+  indexing: [ 'year-index', 'day-index', 'hour-index' ],
 
-    allOf: [{
-        $ref: refs.OADA_SENSOR_DATA_GENERIC_ID
-    },
-    {
-        properties: {
-            dataType: {
-                properties: {
-                    definition: {
-                        pattern: '^https\\:\\/\\/github.com/oada-formats'
-                    },
-                    name: {
-                        pattern: '^barometric-pressure$'
-                    }
-                }
-            },
-            templates: {
-                patternProperties: {
-                    '.': {
-                        properties: {
-                            units: {
-                                type: 'string',
-                            }
-                        }
-                    }
-                }
-            },
-            data: {
-                patternProperties: {
-                    '.': {
-                        properties: {
-                            value: {
-                                type: 'number'
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }]
-};
+  // oadaSchema will take care of representing all these indexing schemes by adding
+  // their keys to the indexing property and to the base schema properties
+  properties: {
+    // templates are object prototypes for data points: i.e. a full data point
+    // is a merge of it's template with the data point itself.  Put things
+    // like units that are repeated for most data points here.
+    templates: override('templates', {
+      patternProperties: {
+        [patterns.indexSafePropertyNames]: override('data-point', vocabToSchema([
+          'id', 'time', 'location', 'barometric-pressure',
+        ])),
+      },
+    }),
+
+    // Data holds the actual data points. If 'strict', it limits
+    // the test to only these properties (no extras), but none of them become required.
+    data: override('data', {
+      patternProperties: {
+        [patterns.indexSafePropertyNames]: override('data-point', {
+          properties: vocabToProperties([
+            'id', 'time', 'location', 'barometric-pressure',
+          ]), 
+          // mark some of the keys as required for every item:
+          required: [ 'id', 'barometric-pressure' ],
+        }),
+      },
+    }),
+  },
+});
