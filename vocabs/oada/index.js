@@ -276,6 +276,22 @@ register('temperature', override('generic-data-value', {
   type: Number,
 }));
 
+register('cloud-cover', override('generic-data-value', {
+  description: 'Cloud cover measured in Oktas (Eigths of the sky that are covered)',
+  properties: {
+    'units': enumSchema([ '', 'okta', 'oktas' ])
+  },
+  type: Number,
+}));
+
+register('dew-point', override('generic-data-value', {
+  description: 'Dew point in degrees',
+  properties: {
+    'units': enumSchema([ '°F', '°C', 'F', 'C' ])
+  },
+  type: Number,
+}));
+
 register('weight', override('generic-data-value', {
     description: 'weight is a data type which holds a reading of weight, as in bushels, lbs, or kg.',
     properties: {
