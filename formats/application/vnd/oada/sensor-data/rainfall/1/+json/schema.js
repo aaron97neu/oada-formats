@@ -13,7 +13,7 @@ module.exports = oadaSchema({
         [patterns.indexSafePropertyNames]: override('data-point', vocabToSchema([
           'sensor', 'units', 'rate',
         ],{
-          units: override('units', enumSchema(['m', 'in']),
+          units: override('units', enumSchema(['m', 'in'])),
           rate: override('rate', { 
             properties: {
               units: enumSchema(['m/s', 'in/s', 'in/h']),
