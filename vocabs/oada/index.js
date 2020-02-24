@@ -294,14 +294,6 @@ register('temperature', override('generic-data-value', {
   type: Number,
 }));
 
-register('cloud-cover', override('generic-data-value', {
-  description: 'Cloud cover measured in Oktas (Eigths of the sky that are covered)',
-  properties: {
-    'units': enumSchema([ '', 'okta', 'oktas' ])
-  },
-  type: Number,
-}));
-
 register('dew-point', override('generic-data-value', {
   description: 'Dew point in degrees',
   properties: {

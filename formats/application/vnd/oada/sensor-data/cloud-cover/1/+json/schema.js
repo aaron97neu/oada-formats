@@ -4,7 +4,6 @@ const { oadaSchema } = require('lib/oada-schema-util.js')(libvocab);
 
 module.exports = oadaSchema({
   _type: 'application/vnd.oada.sensor-data.cloud-cover.1+json',
-<<<<<<< HEAD
 
   properties: {
     templates: override('templates', {
@@ -26,3 +25,4 @@ module.exports = oadaSchema({
     }),
   },
 });
+
