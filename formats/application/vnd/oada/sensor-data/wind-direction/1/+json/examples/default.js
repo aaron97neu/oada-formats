@@ -1,15 +1,24 @@
 module.exports = {
-    dataType: {
-        definition: 'https://github.com/oada-formats/tree/master/formats/' +
-                    'application/vnd/oada/sensor-data/wind-direction/1/+json',
-        name: 'wind-direction'
-    },
-    context: {
-        'timehash-4': 1456370000,
-        'sensor-hub': {
-            _id: '9f84u9f'
-        }
-    },
+    _type: 'application/vnd.oada.sensor-data.wind-direction.1+json',
+
+    indexing: [
+      {
+        name: 'year-index',
+        source: 'oada.vocab.year-index',
+        value: '2019',
+      },
+      { 
+        name: 'day-index',
+        source: 'oada.vocab.day-index',
+        value: '2019-05-04',
+      },
+      {
+        name: 'hour-index',
+        source: 'oada.vocab.hour-index',
+        value: '22:00',
+      },
+    ],
+
     templates: {
         1: {
             sensor: {

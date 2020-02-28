@@ -278,28 +278,19 @@ register('moisture', override('generic-data-value', {
     },
 }));
 
-register('barometric-pressure', override('generic-data-value', {
-  description: 'Atmospheric air pressure as measured by a baramoter or similar device',
+register('pressure', override('generic-data-value', {
+  description: 'Pressure of a fluid. This could be atmospheric air pressure, tire pressure, ' +
+               ' tank pressure, etc',
   properties: {
     'units': enumSchema([ 'Pa', 'hPa', 'bar', 'mBar', 'mm Hg', 'in Hg', 'psi', 'atm', 'at', 'torr'])
   },
-  type: Number,
 }));
 
 register('temperature', override('generic-data-value', {
   description: 'Temperature as measured by a thermometer or similar device',
   properties: {
-    'units': enumSchema([ '°F', '°C', '°R','F', 'C', 'K', 'R'])
+    'units': enumSchema([ '°F', '°C', '°R', 'F', 'C', 'K', 'R', 'Cel'])
   },
-  type: Number,
-}));
-
-register('dew-point', override('generic-data-value', {
-  description: 'Dew point in degrees',
-  properties: {
-    'units': enumSchema([ '°F', '°C', 'F', 'C' ])
-  },
-  type: Number,
 }));
 
 register('weight', override('generic-data-value', {

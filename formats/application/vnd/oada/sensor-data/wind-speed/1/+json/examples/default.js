@@ -1,5 +1,5 @@
 module.exports = {
-  _type: 'application/vnd.oada.sensor-data.wind-direction.1+json',
+  _type: 'application/vnd.oada.sensor-data.wind-speed.1+json',
 
   indexing: [
     {

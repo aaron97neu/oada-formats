@@ -5,7 +5,7 @@ const { oadaSchema } = require('lib/oada-schema-util.js')(libvocab);
 module.exports = oadaSchema({
   _type: 'application/vnd.oada.sensor-data.dew-point.1+json',
 
-  description: 'Atmospheric air termperature',
+  description: 'Atmospheric air temperature',
     
   indexing: [ 'year-index', 'day-index', 'hour-index' ],
 
@@ -18,7 +18,7 @@ module.exports = oadaSchema({
     templates: override('templates', {
       patternProperties: {
         [patterns.indexSafePropertyNames]: override('data-point', vocabToSchema([
-          'id', 'time', 'location', 'dew-point',
+        'sensor', 'time', 'temperature', 'location',
         ])),
       },
     }),
@@ -29,10 +29,8 @@ module.exports = oadaSchema({
       patternProperties: {
         [patterns.indexSafePropertyNames]: override('data-point', {
           properties: vocabToProperties([
-            'id', 'time', 'location', 'dew-point',
-          ]), 
-          // mark some of the keys as required for every item:
-          required: [ 'id', 'dew-point' ],
+            'id', 'template', 'time', 'temperature',
+          ]),
         }),
       },
     }),

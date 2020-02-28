@@ -1,5 +1,5 @@
 const libvocab = require('vocabs/oada');
-const {vocab,vocabToSchema,patterns,override} = libvocab;
+const {vocabToProperties,vocabToSchema,enumSchema,patterns,override} = libvocab;
 const { oadaSchema } = require('lib/oada-schema-util.js')(libvocab);
 
 module.exports = oadaSchema({

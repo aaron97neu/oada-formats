@@ -18,7 +18,7 @@ module.exports = oadaSchema({
     templates: override('templates', {
       patternProperties: {
         [patterns.indexSafePropertyNames]: override('data-point', vocabToSchema([
-          'id', 'time', 'location', 'barometric-pressure',
+          'sensor', 'time', 'pressure', 'location',
         ])),
       },
     }),
@@ -29,10 +29,8 @@ module.exports = oadaSchema({
       patternProperties: {
         [patterns.indexSafePropertyNames]: override('data-point', {
           properties: vocabToProperties([
-            'id', 'time', 'location', 'barometric-pressure',
+            'id', 'template', 'time', 'pressure',
           ]), 
-          // mark some of the keys as required for every item:
-          required: [ 'id', 'barometric-pressure' ],
         }),
       },
     }),
