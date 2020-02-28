@@ -8,7 +8,7 @@ module.exports = schemaUtil.oadaSchema({
   description: 
   
 'This is the scehma for a CanadaGAP audit.  Please refer to the example and '+
-'the accompanying spreadsheet for how this translates into an actual audit'.
+'the accompanying spreadsheet for how this translates into an actual audit',
 
   properties: vocabToProperties([
     // certificationid is the same across audit, corrective actions, and certificate

@@ -14,16 +14,6 @@ module.exports = {
     name: 'barometric-pressure'
   },
 
-  // If this document has outer context about which samples are included in it,
-  // that goes under 'context'.  Valid keys for 'context' are anything that
-  // can be used to index data.  In the case of data under a sensor-hub organized 
-  // by timehash-4, it is indexed both by the sensor hub which reported the
-  // data and by the particular timehash that the data belongs to.
-  context: {
-    'timehash-4': 1456370000,
-    'sensor-hub': { _id: '9f84u9f' },
-  },
-
   // If there are aggregate statistics to be reported about this group of data,
   // put the aggregates under 'stats'
   stats: {

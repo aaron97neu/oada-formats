@@ -1,216 +1,43 @@
-var refs = require('../../../../../../../refs.js');
+const libvocab = require('vocabs/oada');
+const {vocabToSchema,vocabToProperties,patterns,override} = libvocab;
+const { oadaSchema } = require('lib/oada-schema-util.js')(libvocab);
 
-module.exports = {
-    id: refs.OADA_SENSOR_DATA_GENERIC_ID,
-    description: 'application/vnd.oada.sensor-data.generic.1+json',
+module.exports = oadaSchema({
+  _type: 'application/vnd.oada.sensor-data.generic.1+json',
 
-    additionalProperties: true,
+  description: 'Generic Sensor data',
+    
+  indexing: [ 'year-index', 'day-index', 'hour-index' ],
 
-    properties: {
-        dataType: {
-            type: 'object',
-            properties: {
-                definition: {
-                    type: 'string',
-                },
-                name: {
-                    type: 'string',
-                }
-            },
-            required: [
-                'definition',
-                'name'
-            ]
-        },
-        context: {
-            $ref: refs.TYPE_CONTEXT_ID
-        },
-        stats: {
-            type: 'object',
-            properties: {
-                max: {
-                    $ref: '#/definitions/statsData'
-                },
-                min: {
-                    $ref: '#/definitions/statsData'
-                },
-                mean: {
-                    $ref: '#/definitions/statsData'
-                },
-                std: {
-                    $ref: '#/definitions/statsData'
-                }
-            }
-        },
-        templates: {
-            type: 'object',
-            patternProperties: {
-                '.': {
-                    type: 'object',
-                    properties: {
-                        sensor: {
-                            anyOf: [{
-                                $ref: refs.OADA_LINK
-                            },
-                            {
-                                $ref: refs.OADA_SENSOR_ID
-                            }]
-                        },
-                        units: {
-                        },
-                        location: {
-                            $ref: refs.TYPE_LOCATION_ID
-                        },
-                        quantization: {
-                            type: 'object',
-                            properties: {
-                                units: {
-                                },
-                                levels: {
-                                    type: 'array',
-                                    items: {
-                                        type: 'object',
-                                        properties: {
-                                            start: {
-                                                anyOf: [{
-                                                    type: 'string'
-                                                },
-                                                {
-                                                    type: 'number'
-                                                }]
-                                            },
-                                            end: {
-                                                anyOf: [{
-                                                    type: 'string'
-                                                },
-                                                {
-                                                    type: 'number'
-                                                }]
-                                            },
-                                            value: {
-                                                anyOf: [{
-                                                    type: 'string'
-                                                },
-                                                {
-                                                    type: 'number'
-                                                }]
-                                            },
-                                        },
-                                        required: [
-                                            'value'
-                                        ]
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    required: [
-                        'sensor',
-                        'units'
-                    ]
-                }
-            }
-        },
-        data: {
-            type: 'object',
-            patternProperties: {
-                '.': {
-                    allOf: [{
-                        type: 'object',
-                        properties: {
-                            template: {
-                                type: 'string'
-                            },
-                        },
-                        required: [
-                            'template',
-                        ]
-                    },
-                    {
-                        anyOf: [{
-                            type: 'object',
-                            properties: {
-                                time: {
-                                    type: 'number',
-                                    minimum: 0
-                                },
-                                value: {
-                                }
-                            },
-                            required: [
-                                'time',
-                                'value'
-                            ],
-                        },
-                        {
-                            type: 'object',
-                            properties: {
-                                'time-start': {
-                                    type: 'number',
-                                    minimum: 0
-                                },
-                                'time-end': {
-                                    type: 'number',
-                                    minimum: 0
-                                },
-                                max: {
-                                    type: 'number',
-                                },
-                                min: {
-                                    type: 'number',
-                                },
-                                mean: {
-                                    type: 'number',
-                                },
-                                std: {
-                                    type: 'number',
-                                }
-                            },
-                            required: [
-                                'time-start',
-                                'time-end'
-                            ],
-                        }]
-                    }]
-                }
-            }
-        }
-    },
-    required: [
-        'dataType',
-        'context',
-        'templates',
-        'data'
-    ],
-    definitions: {
-        statsData: {
-            oneOf: [{
-                type: 'object',
-                properties: {
-                    dataKey: {
-                        type: 'string'
-                    }
-                },
-                required: [
-                    'dataKey'
-                ]
-            },
-            {
-                type: 'object',
-                properties: {
-                    value: {
-                        oneOf: [{
-                            type: 'string'
-                        },
-                        {
-                            type: 'number'
-                        }]
-                    }
-                },
-                required: [
-                    'value'
-                ]
-            }]
-        }
-    }
-};
+  // oadaSchema will take care of representing all these indexing schemes by adding
+  // their keys to the indexing property and to the base schema properties
+  properties: {
+    stats: override('stats', {
+        properties: vocabToProperties([
+
+        ]),
+    }),
+    // templates are object prototypes for data points: i.e. a full data point
+    // is a merge of it's template with the data point itself.  Put things
+    // like units that are repeated for most data points here.
+    templates: override('templates', {
+      patternProperties: {
+        [patterns.indexSafePropertyNames]: override('data-point', vocabToSchema([
+          'sensor', 'time', 'units', 'location', 'quantization',
+        ])),
+      },
+    }),
+
+    // Data holds the actual data points. If 'strict', it limits
+    // the test to only these properties (no extras), but none of them become required.
+    data: override('data', {
+      patternProperties: {
+        [patterns.indexSafePropertyNames]: override('data-point', {
+          properties: vocabToProperties([
+            'id', 'template', 'time', 'value',
+          ]), 
+        }),
+      },
+    }),
+  },
+})

@@ -1,7 +1,4 @@
 module.exports = {
-  _id: "92jfik23o3iwe",
-  _rev: "1-kdufj02ifj2klfklwef",
-  _meta: { _metaid: "92jfik23o3iwe", _rev: "1-kfj029i3jfk2l3" },
   _type: "application/vnd.oada.sensor.1+json",
 
   // This document represents a description of a particular sensor
